@@ -77,3 +77,64 @@ for(prop in tree){
 }
 /* Конец внешнего цикла *
 ```
+#### 2. Рендеринг дерева с помощь блочных элементов DOM
+```javascript
+/* Задание 2: рендеринг дерева */
+function renderTree(tree, el){
+    let prop;
+    for(prop in tree){
+        let div = document.createElement('div');
+
+        if(typeof(tree[prop]) !== 'object'){
+            div.innerText = tree[prop];
+
+            if(tree[prop] === 1)
+                div.style.background = '#ccc';
+
+            el.appendChild(div);
+        } else {
+            if(Array.isArray(tree[prop])){
+                for(let i = 0; i < tree[prop].length; i++){
+                    let div = document.createElement('div');
+
+                    if(tree[prop][i] === 1)
+                        div.style.background = '#ccc';
+
+                    div.innerText = tree[prop][i];
+                    el.appendChild(div);
+                }
+
+                continue;
+            }
+
+            el.appendChild(div);
+            renderTree(tree[prop], div);
+        }
+    }
+}
+```
+Функция принимает 2 аргумента: объект-дерево, DOM-элемент, в котором будет отрисовываться блочная иерархия дерева
+```javascript
+renderTree(tree, el)
+```
+В цикле проходимся по дереву аналогично предыдущей функции и на каждой итерации создаем div-элемент
+```javascript
+/* Начало внешнего цикла for...in */
+    for(prop in tree){
+        let div = document.createElement('div');
+    /*.....................*/
+```
+Если свойств не является объектом, то отрисовываем его в созданном блоке. Если значение свойства равно единице,
+закрашиваем блок в серый цвет, после чего добавляем div в выбранный DOM-элемент
+```javascript
+/*.....................*/
+    if(typeof(tree[prop]) !== 'object'){
+        div.innerText = tree[prop];
+
+        if(tree[prop] === 1)
+            div.style.background = '#ccc';
+
+        el.appendChild(div);
+    }
+/*.....................*/
+```
