@@ -7,31 +7,31 @@
 3. Выполнить выше перечисленные задания с использованием сборщика модулей Webpack.
 
 #### 1. Поиск указанных значений
-    ```javascript
-    /* Задание 1: вывод путей свойств дерева со значением '1' */
-    function getValue1(tree, curPath = '', prevPath = ''){
-        let prop;
-        for(prop in tree){
-            if(tree[prop] === 1){
-                console.log(tree[prop], curPath + prop);
-            }
+```javascript
+/* Задание 1: вывод путей свойств дерева со значением '1' */
+function getValue1(tree, curPath = '', prevPath = ''){
+    let prop;
+    for(prop in tree){
+        if(tree[prop] === 1){
+            console.log(tree[prop], curPath + prop);
+        }
 
-            if(Array.isArray(tree[prop])){
-                for(let i = 0; i < tree[prop].length; i++){
-                    if(tree[prop][i] === 1) {
-                        console.log(tree[prop][i], curPath + i);
-                    }
+        if(Array.isArray(tree[prop])){
+            for(let i = 0; i < tree[prop].length; i++){
+                if(tree[prop][i] === 1) {
+                    console.log(tree[prop][i], curPath + i);
                 }
-
-                continue;
             }
 
-            if(typeof(tree[prop]) === 'object'){
-                prevPath = curPath;
-                curPath += prop + ' > ';
-                getValue1(tree[prop], curPath);
-                curPath = prevPath;
-            }
+            continue;
+        }
+
+        if(typeof(tree[prop]) === 'object'){
+            prevPath = curPath;
+            curPath += prop + ' > ';
+            getValue1(tree[prop], curPath);
+            curPath = prevPath;
         }
     }
-    ```
+}
+```
