@@ -9,7 +9,7 @@
 #### 1. Поиск указанных значений
 ```javascript
 /* Задание 1: вывод путей свойств дерева со значением '1' */
-function getValue1(tree, curPath = '', prevPath = ''){
+function getValue1(tree, curPath = ''){
     let prop;
     for(prop in tree){
         if(tree[prop] === 1){
@@ -35,3 +35,4 @@ function getValue1(tree, curPath = '', prevPath = ''){
     }
 }
 ```
+Функция принимает 2 аргумента, последний используется для замыкания и его не нужно передавать при вывозове функции: объекто-дерево, текущий путь
