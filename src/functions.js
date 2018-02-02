@@ -1,6 +1,6 @@
 /* Задание 1: вывод путей свойств дерева со значением '1' */
-function getValue1(tree, curPath = '', prevPath = ''){
-    let prop;
+function getValue1(tree, curPath = ''){
+    let prop; let prevPath;
     for(prop in tree){
         if(tree[prop] === 1){
             console.log(tree[prop], curPath + prop);

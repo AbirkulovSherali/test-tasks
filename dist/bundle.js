@@ -159,9 +159,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* Задание 1: вывод путей свойств дерева со значением '1' */
 function getValue1(tree) {
     var curPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var prevPath = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
-    var prop = void 0;
+    var prop = void 0;var prevPath = void 0;
     for (prop in tree) {
         if (tree[prop] === 1) {
             console.log(tree[prop], curPath + prop);
