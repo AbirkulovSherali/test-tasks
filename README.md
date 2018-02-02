@@ -337,5 +337,37 @@ window.onload = function() {
     let el = document.getElementById('treeBlock');
     functions.renderTree(trunk, el);
 }
+```
+И наконец, весь код перчисленных файлов собирается в модули, в файл dist/bundle.js и подключается в индексной странице
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <style>
+
+        #treeBlock {
+            width: 800px;
+            border: 1px solid #ccc;
+            margin: 0 auto;
+        }
+
+        #treeBlock div {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 7px 7px;
+        }
+
+    </style>
+
+    <div id="treeBlock"></div>
+
+    <script src="dist/bundle.js"></script>>
+</body>
+</html>
 
 ```
