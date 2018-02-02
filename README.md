@@ -166,3 +166,176 @@ renderTree(tree, el)
     }
 /* Конец внешнего цикла for...in */
 ```
+#### 3. Использование сборщика модулей Webpack
+Структура проекта:
+  - dist
+    - bundle.js
+  - src
+    - functions.js
+    - main.js
+  - index.html
+  - package.json
+  - webpack.config.js
+#### Описание файла webpack.config.js:
+Подключение модулей path и самого Webpack. В качестве входной точки указываем файл src/main.js,
+а в качестве выходного файла - dist/bundle.js. Прописываем некоторые правила для транспайлинга ES2015 для корректной работы во всех браузерах при использовании некоторых новых возможностей в синтаксисе. Предварительно нужно установить транспайлер Babel.js
+```javascript
+const path = require('path');
+const webpack = require('webpack');
+
+module.exports = {
+    entry: {
+        main: './src/main.js',
+    },
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    module: {
+        rules: [
+            {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
+        ]
+    }
+}
+```
+#### Описание файла functions.js:
+Функции, указанные в этом файл экспортируются для возможности импорта в другом файле
+```javascript
+/* Задание 1: вывод путей свойств дерева со значением '1' */
+function getValue1(tree, curPath = ''){
+    let prop; let prevPath;
+    for(prop in tree){
+        if(tree[prop] === 1){
+            console.log(tree[prop], curPath + prop);
+        }
+
+        if(Array.isArray(tree[prop])){
+            for(let i = 0; i < tree[prop].length; i++){
+                if(tree[prop][i] === 1) {
+                    console.log(tree[prop][i], curPath + i);
+                }
+            }
+
+            continue;
+        }
+
+        if(typeof(tree[prop]) === 'object'){
+            prevPath = curPath;
+            curPath += prop + ' > ';
+            getValue1(tree[prop], curPath);
+            curPath = prevPath;
+        }
+    }
+}
+
+/* Задание 2: рендеринг дерева */
+function renderTree(tree, el){
+    let prop;
+    for(prop in tree){
+        let div = document.createElement('div');
+
+        if(typeof(tree[prop]) !== 'object'){
+            div.innerText = tree[prop];
+
+            if(tree[prop] === 1)
+                div.style.background = '#ccc';
+
+            el.appendChild(div);
+        } else {
+            if(Array.isArray(tree[prop])){
+                for(let i = 0; i < tree[prop].length; i++){
+                    let div = document.createElement('div');
+
+                    if(tree[prop][i] === 1)
+                        div.style.background = '#ccc';
+
+                    div.innerText = tree[prop][i];
+                    el.appendChild(div);
+                }
+
+                continue;
+            }
+
+            el.appendChild(div);
+            renderTree(tree[prop], div);
+        }
+    }
+}
+
+export default {
+    getValue1: getValue1,
+    renderTree: renderTree
+}
+```
+#### Описание файла main.js:
+В этом файле импортируются функции из файла main.js и их выполнение над структурным деревом
+```javascript
+import functions from './functions';
+
+window.onload = function() {
+
+    let trunk = {
+        "Item 1": 1,
+        "Item 2": {
+            "Item 2.1": "blue",
+            "Item 2.2": 1,
+            "Item 2.3": {
+                "Item 2.3.1": 1,
+                "Item 2.3.2": "green"
+            }
+        },
+        "Item 3": 2,
+        "Item 4": 'red',
+        "Item 5": {
+            "Item 5.1": 1,
+            "Item 5.2": {
+                "Item 5.2.1": "color",
+                "Item 5.2.2": "tree",
+                "Item 5.2.3": 1,
+            },
+            "Item 5.3": "apple",
+            "Item 5.4": {
+                "Item 5.3.1": 1,
+                "Item 5.3.2": "background",
+                "Item 5.3.3": {
+                    "Item 5.3.3.1": "road",
+                    "Item 5.3.3.2": "track",
+                    "Item 5.3.3.3": 1,
+                }
+            },
+            "Item 5.4": [1, 9, 4, 5, 1]
+        },
+        "Item 6": {
+            "Item 6.1": "january",
+            "Item 6.2": "may",
+            "Item 6.3": {
+                "Item 6.3.1": 34,
+                "Item 6.3.2": 4,
+                "Item 6.3.3": 15,
+            }
+        },
+        "Item7": {
+            "Item 7.1": "global",
+            "Item 7.2": 1,
+            "Item 7.3": {
+                "Item 7.3.1": "video",
+                "Item 7.3.2": {
+                    "Item 7.3.2.1": 1
+                },
+                "Item 7.3.3": 3,
+                "Item 7.3.4": {
+                    "Item 7.3.4.1": 1
+                }
+            }
+        }
+    };
+
+    /* Задание 1 */
+    functions.getValue1(trunk);
+
+    /* Задание 2 */
+    let el = document.getElementById('treeBlock');
+    functions.renderTree(trunk, el);
+}
+
+```
