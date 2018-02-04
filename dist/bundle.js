@@ -76,8 +76,6 @@ var _functions2 = _interopRequireDefault(_functions);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 window.onload = function () {
 
     var trunk = {
@@ -92,7 +90,7 @@ window.onload = function () {
         },
         "Item 3": 2,
         "Item 4": 'red',
-        "Item 5": _defineProperty({
+        "Item 5": {
             "Item 5.1": 1,
             "Item 5.2": {
                 "Item 5.2.1": "color",
@@ -101,15 +99,16 @@ window.onload = function () {
             },
             "Item 5.3": "apple",
             "Item 5.4": {
-                "Item 5.3.1": 1,
-                "Item 5.3.2": "background",
-                "Item 5.3.3": {
-                    "Item 5.3.3.1": "road",
-                    "Item 5.3.3.2": "track",
-                    "Item 5.3.3.3": 1
+                "Item 5.4.1": 1,
+                "Item 5.4.2": "background",
+                "Item 5.4.3": {
+                    "Item 5.4.3.1": "road",
+                    "Item 5.4.3.2": "track",
+                    "Item 5.4.3.3": 1
                 }
-            }
-        }, "Item 5.4", [1, 9, 4, 5, 1]),
+            },
+            "Item 5.5": [1, 9, 4, 5, 1]
+        },
         "Item 6": {
             "Item 6.1": "january",
             "Item 6.2": "may",
@@ -119,7 +118,7 @@ window.onload = function () {
                 "Item 6.3.3": 15
             }
         },
-        "Item7": {
+        "Item 7": {
             "Item 7.1": "global",
             "Item 7.2": 1,
             "Item 7.3": {
@@ -167,6 +166,8 @@ function getValue1(tree) {
         }
 
         if (Array.isArray(tree[prop])) {
+            prevPath = curPath;
+            curPath += prop + ' > ';
             for (var i = 0; i < tree[prop].length; i++) {
                 if (tree[prop][i] === 1) {
                     console.log(tree[prop][i], curPath + i);

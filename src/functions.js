@@ -7,6 +7,8 @@ function getValue1(tree, curPath = ''){
         }
 
         if(Array.isArray(tree[prop])){
+            prevPath = curPath;
+            curPath += prop + ' > ';
             for(let i = 0; i < tree[prop].length; i++){
                 if(tree[prop][i] === 1) {
                     console.log(tree[prop][i], curPath + i);
